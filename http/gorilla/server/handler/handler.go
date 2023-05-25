@@ -7,6 +7,9 @@ import (
 	"net/http"
 )
 
+type NotFoundHandler struct {
+}
+
 func HomeHandler(msg string) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("Path: %s", r.URL.Path)
@@ -57,4 +60,9 @@ func FormHandler(msg string) func(http.ResponseWriter, *http.Request) {
 			log.Fatal(err)
 		}
 	}
+}
+
+func (NotFoundHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	log.Printf("404 >>> %s", r.URL.Path)
+	http.NotFound(w, r)
 }
